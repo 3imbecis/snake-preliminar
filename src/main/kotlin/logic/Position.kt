@@ -1,20 +1,24 @@
 package logic
 import visual.*
 
-data class Position(var x: Int, var y : Int)
+data class Position(var x: Int, var y : Int);
 
-fun Position.setX(x:Int){
-    var newX = x;
-    newX = if(x < 0) (WIDTH  + x) else newX
-    newX = if(x >= WIDTH) (x - WIDTH) else newX;
-    this.x = newX;
+fun Position.setX(x: Int){
+    if(x < 0)
+        this.x = x + WIDTH;
+    else if(x >= WIDTH)
+        this.x = x - WIDTH;
+    else
+        this.x = x;
 }
 
-fun Position.setY(y:Int){
-    var newY = y;
-    newY = if(y < 0) (HEIGHT  + y) else newY
-    newY = if(y >= HEIGHT) (y - HEIGHT) else newY;
-    this.y = newY;
+fun Position.setY(y: Int){
+    if(y < 0)
+        this.y = y + HEIGHT;
+    else if(y >= HEIGHT)
+        this.y = y - HEIGHT;
+    else
+        this.y = y;
 }
 
 
