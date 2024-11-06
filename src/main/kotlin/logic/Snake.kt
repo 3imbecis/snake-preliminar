@@ -10,9 +10,11 @@ const val SOUTH: Int = 3 // DOWN
 
 data class Snake(val position: Position, val direction: Int)
 
-fun Snake.setDirection(direction: Int) : Int {
-    require(!(direction > SOUTH || direction < WEST)) { "Invalid direction: $direction" }
+// Validar nova direção pedida pelo utilizador
+fun Snake.setDirection(direction: Int): Int {
+    require(direction in WEST..SOUTH) { "Invalid direction: $direction" }
 
+    // Não mudar direção quando o jogador tenta fazer um 180
     if(this.direction == NORTH && direction == SOUTH) return this.direction
     if(this.direction == SOUTH && direction == NORTH) return this.direction
     if(this.direction == WEST && direction == EAST) return this.direction
@@ -21,14 +23,37 @@ fun Snake.setDirection(direction: Int) : Int {
     return direction
 }
 
-fun Snake.move() : Position {
-    check(this.direction in WEST..SOUTH) {"Invalid direction: $this.direction"}
-    val newPos = when(this.direction){
-        WEST -> Position(if(this.position.x - 1 < 0) WIDTH + (this.position.x - 1) else (this.position.x - 1) ,this.position.y)
-        NORTH -> Position(this.position.x, if(this.position.y - 1 < 0) HEIGHT + (this.position.y - 1) else (this.position.y - 1))
-        EAST -> Position(if(this.position.x + 1 >= WIDTH) (this.position.x + 1) - WIDTH else (this.position.x + 1) ,this.position.y)
-        SOUTH -> Position(this.position.x, if(this.position.y + 1 >= HEIGHT) (this.position.y + 1) - HEIGHT else (this.position.y + 1))
-        else -> this.position
+fun Snake.move(): Position {
+
+    var x = this.position.x
+    var y = this.position.y
+
+    when(this.direction){
+        WEST -> {
+            x--
+            if(x < 0){
+                x += WIDTH
+            }
+        }
+        NORTH -> {
+            y--
+            if(y < 0){
+                y += HEIGHT
+            }
+        }
+        EAST -> {
+            x++
+            if(x >= WIDTH){
+                x -= WIDTH
+            }
+        }
+        SOUTH -> {
+            y++
+            if(y >= HEIGHT){
+                y -= HEIGHT
+            }
+        }
     }
-    return newPos
+
+    return Position(x, y)
 }

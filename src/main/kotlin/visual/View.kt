@@ -44,9 +44,16 @@ fun Canvas.draw(game: Game){
         drawSprite(SPRITE_BRICK, wall.x, wall.y)
 
     // Desenhar a cobra
-    val x = game.snake.position.x
-    val y = game.snake.position.y
-    when(game.snake.direction){
+    drawSnake(game.snake)
+
+}
+
+fun Canvas.drawSnake(snake: Snake){
+
+    val x = snake.position.x
+    val y = snake.position.y
+
+    when(snake.direction){
         NORTH -> {
             drawSprite(SPRITE_HEAD_NORTH, x, y)
             drawSprite(SPRITE_TAIL_NORTH, x, y + 1)
@@ -68,7 +75,16 @@ fun Canvas.draw(game: Game){
 }
 
 fun Canvas.drawSprite(sprite: String, x: Int, y: Int){
-    this.drawImage(sprite, x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE)
+
+    var posX = x
+    var posY = y
+
+    if(posX < 0) posX += WIDTH
+    if(posY < 0) posY += HEIGHT
+    if(posX >= WIDTH) posX -= WIDTH
+    if(posY >= HEIGHT) posY -= HEIGHT
+
+    this.drawImage(sprite, posX * GRID_SIZE, posY * GRID_SIZE, GRID_SIZE, GRID_SIZE)
 }
 
 fun Canvas.testAllSprites(){

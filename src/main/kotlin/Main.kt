@@ -4,6 +4,7 @@ import pt.isel.canvas.onStart
 import pt.isel.canvas.onFinish
 import visual.*
 import logic.*
+
 const val KEY_W = 87
 const val KEY_A = 65
 const val KEY_S = 83
@@ -13,19 +14,25 @@ const val KEY_DOWN = 40
 const val KEY_LEFT = 37
 const val KEY_RIGHT = 39
 
-
 fun main(){
 
     onStart {
 
         val canvas = Canvas(WIDTH * GRID_SIZE, HEIGHT * GRID_SIZE, BACKGROUND)
-        var game = Game(Snake(Position(WIDTH/2, HEIGHT/2), EAST), listOf())
+        var game = Game(
+            Snake(Position(WIDTH/2, HEIGHT/2), EAST),
+            listOf()
+        )
 
         canvas.onTimeProgress(250) { time :Long ->
-            val ctime : Long = 250 * (time / 250)
-            val addWall = (ctime %5000 == 0L)
-            game = game.tick(addWall)
-            println("$ctime : $addWall")
+
+            // Arrendorar time
+            val ctime: Long = 250 * (time / 250)
+            // Criar parede a cada 5 segundos
+            val createWall = (ctime % 5000 == 0L)
+
+            game = game.tick(createWall)
+
             canvas.draw(game)
         }
 
@@ -37,7 +44,7 @@ fun main(){
 
 }
 
-fun handleInput(code : Int, game: Game) : Snake {
+fun handleInput(code: Int, game: Game): Snake {
     return Snake(game.snake.position, game.snake.setDirection(when(code){
         KEY_W, KEY_UP    -> NORTH
         KEY_S, KEY_DOWN  -> SOUTH
@@ -45,7 +52,6 @@ fun handleInput(code : Int, game: Game) : Snake {
         KEY_D, KEY_RIGHT -> EAST
         else -> game.snake.direction
     }))
-
 }
 
 
