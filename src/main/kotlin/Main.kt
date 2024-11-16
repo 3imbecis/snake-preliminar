@@ -26,7 +26,7 @@ fun main(){
 
         canvas.onTimeProgress(250) { time :Long ->
 
-            // Arrendorar time
+            // Arredondar time
             val ctime: Long = 250 * (time / 250)
             // Criar parede a cada 5 segundos
             val createWall = (ctime % 5000 == 0L)
@@ -53,5 +53,4 @@ fun handleInput(code: Int, game: Game): Snake {
         else -> game.snake.direction
     }))
 }
-
 
